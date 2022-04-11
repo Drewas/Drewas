@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stdlib.h>
+#include <random>
 #include <cmath>
 
 using namespace std;
@@ -7,14 +9,22 @@ void Mpi()
 {
     setlocale( LC_ALL, "Russian" );
     double m_p0 = 0.135; //GeV/c^2//
-    int const c = 1;
     //|p1|=|p2|=p, E=pc => mc^2=2pc => p = mc^2/2= m/2//
     //m_po^2 = 4E_g1*E_g2 => E_g1 = m_po/2//
+    srand(time(NULL));
+    double phi,px,py;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis(-M_PI, M_PI);
+    phi = dis(gen);
+    int const c = 1;
     double p1,p2;
     p1= m_p0/2;
     p2=p1;
     double E_g1, E_g2;
     E_g1 = m_p0/2;
     E_g2 = E_g1;
-    cout << "Èìïóëüñ ãàììà êâàíòà 1 = èìïóëüñó ãàììà êâàíòà äâà è ðàâåí = " << p1 << endl << "Ýíåðãèÿ ãàììà êâàíòà 1 = ýíåðãèè ãàììà êâàíòà äâà è ðàâíà = " << E_g1 << endl;
+    cout << "Ð˜Ð¼Ð¿ÑƒÐ»ÑŒÑ Ð³Ð°Ð¼Ð¼Ð° ÐºÐ²Ð°Ð½Ñ‚Ð° 1 = Ð¸Ð¼Ð¿ÑƒÐ»ÑŒÑÑƒ Ð³Ð°Ð¼Ð¼Ð° ÐºÐ²Ð°Ð½Ñ‚Ð° Ð´Ð²Ð° Ð¸ Ñ€Ð°Ð²ÐµÐ½ = " << p1 << " GeV/c" <<endl << "Ð­Ð½ÐµÑ€Ð³Ð¸Ñ Ð³Ð°Ð¼Ð¼Ð° ÐºÐ²Ð°Ð½Ñ‚Ð° 1 = ÑÐ½ÐµÑ€Ð³Ð¸Ð¸ Ð³Ð°Ð¼Ð¼Ð° ÐºÐ²Ð°Ð½Ñ‚Ð° Ð´Ð²Ð° Ð¸ Ñ€Ð°Ð²Ð½Ð° = " << E_g1 << "GeV" << endl;
+    px=p1*cos(phi);
+    py=p1*sin(phi);
 }
