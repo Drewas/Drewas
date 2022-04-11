@@ -22,11 +22,12 @@ void Mpi()
     Pion -> Divide (3,2);
     Pion -> cd(1) ;
     TRandom *rnd = new TRandom();
-    TH1F *hist_phi = new TH1F ("phi", "hist uniform phi",360,-TMath::Pi(),TMath::Pi());
-    TH1F *hist_px = new TH1F ("px", "hist uniform px",100,-0.08,0.08);
-    TH1F *hist_py = new TH1F ("py", "hist uniform py",100,-0.08,0.08);
-    TH1F *hist_E = new TH1F ("E", "hist uniform E",100,0.066,0.068);
-    TH1F *hist_P = new TH1F ("P", "hist uniform P",100,0.066,0.068);
+    TH1D *hist_phi = new TH1D ("phi", "hist uniform phi",360,-TMath::Pi(),TMath::Pi());
+    TH1D *hist_px = new TH1D ("px", "hist uniform px",100,-0.08,0.08);
+    TH1D *hist_py = new TH1D ("py", "hist uniform py",100,-0.08,0.08);
+    TH1D *hist_E = new TH1D ("E", "hist uniform E",100,0.066,0.068);
+    TH1D *hist_P = new TH1D ("P", "hist uniform P",100,0.066,0.068);
+    TH2D *hist2d = new TH2D("hist2d","px and py", 100,-0.08,0.08,100,-0.08,0.08);
     for (int i=0;i<1000000;i++)
     {
         phi = rnd->Uniform(-1.*TMath::Pi(),TMath::Pi());
@@ -37,6 +38,7 @@ void Mpi()
         hist_py->Fill(py);
         hist_E -> Fill(E_g1);
         hist_P -> Fill(p1);
+        hist2d->Fill(px,py);
     }
     hist_phi->Draw();
     Pion->SaveAs("/media/sf_Linux-To-Windows/Phi.png");
@@ -52,6 +54,9 @@ void Mpi()
     Pion->cd(5);
     hist_py ->Draw();
     Pion->SaveAs("/media/sf_Linux-To-Windows/Py.png");
-
+    Pion->cd(6)->SetLogz();
+    hist2d->Draw("colz");
+    Pion->SaveAs("/media/sf_Linux-To-Windows/2dhist.png");
 }
+
 
