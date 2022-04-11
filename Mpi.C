@@ -9,7 +9,7 @@ void Mpi()
     double m_p0 = 0.135; //GeV/c^2//
     //|p1|=|p2|=p, E=pc => mc^2=2pc => p = mc^2/2= m/2//
     //m_po^2 = 4E_g1*E_g2 => E_g1 = m_po/2//
-    double phi1,phi2,px1,py1,pz1,theta1,eta1,cosinustheta1,px2,py2,pz2,theta2,eta2,cosinustheta2;
+    double dphi,phi1,phi2,px1,py1,pz1,theta1,eta1,cosinustheta1,px2,py2,pz2,theta2,eta2,cosinustheta2;
     int const c = 1;
     double p1,p2;
     p1= m_p0/2;
@@ -18,6 +18,7 @@ void Mpi()
     E_g1 = m_p0/2;
     E_g2 = E_g1;
     cout << "Pgamma 1 = Pgamma 2 = " << p1 << " GeV/c" <<endl << "E gamma 1 = E gamma 2 = " << E_g1 << "GeV" << endl;
+
     TCanvas *Pion = new TCanvas ("Pion","rand", 2560,1440);
     Pion -> Divide (6,3);
     Pion -> cd(1) ;
@@ -43,6 +44,9 @@ void Mpi()
     TH1D *hist_P2 = new TH1D ("P2", "hist P2",100,0.066,0.068);
     TH2D *hist2d2 = new TH2D("hist2d2","px2 and py2", 100,-0.08,0.08,100,-0.08,0.08);
     TH1D *hist_pz2 = new TH1D ("pz2", "hist pz2",100,-0.08,0.08);
+
+    TH1D *hist_dphi = new TH1D ("dphi", "phi1 - phi 2",360,-TMath::Pi(),TMath::Pi());
+
     for (int i=0;i<1000000;i++)
     {
         phi1 = rnd->Uniform(-1.*TMath::Pi(),TMath::Pi());
@@ -54,11 +58,29 @@ void Mpi()
         pz1=p1*cos(theta1);
 
         phi2 = phi1 - TMath::Pi();
+        if (phi2<-1.*TMath::Pi())
+        {
+            phi2 += 2*TMath::Pi();
+        }
+        if (phi2>TMath::Pi())
+        {
+            phi2 -= 2*TMath::Pi();
+        }
         theta2 = TMath::Pi() - theta1;
         eta2 = -1.*eta1;
         px2=p2*cos(phi2)*sin(theta2);
         py2=p2*sin(phi2)*sin(theta2);
         pz2=p2*cos(theta2);
+
+        dphi = phi1 - phi2;
+        if (dphi<-1.*TMath::Pi())
+        {
+            dphi+= 2*TMath::Pi();
+        }
+        if (dphi>TMath::Pi())
+        {
+            dphi-= 2*TMath::Pi();
+        }
 
         hist_phi1->Fill(phi1);
         hist_theta1->Fill(theta1);
@@ -79,6 +101,8 @@ void Mpi()
         hist_P2-> Fill(p2);
         hist2d2->Fill(px2,py2);
         hist_eta2->Fill(eta2);
+
+        hist_dphi->Fill(dphi);
     }
     hist_phi1->Draw();
     Pion -> cd(2);
@@ -98,6 +122,7 @@ void Mpi()
     Pion->cd(9);
     hist_eta1->Draw();
     Pion->SaveAs("/media/sf_Linux-To-Windows/eta.png");
+
     hist_phi2->Draw();
     Pion -> cd(10);
     hist_E2-> Draw();
@@ -115,5 +140,7 @@ void Mpi()
     hist_theta2->Draw();
     Pion->cd(17);
     hist_eta2->Draw();
+    Pion->cd(18);
+    hist_dphi->Draw();
     Pion->SaveAs("/media/sf_Linux-To-Windows/all.png");
 }
