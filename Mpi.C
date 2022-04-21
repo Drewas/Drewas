@@ -4,7 +4,7 @@
 
 using namespace std;
 
-void Mpi()
+void Mp0()
 {
     double m_p0 = 0.135; //GeV/c^2//
     //|p1|=|p2|=p, E=pc => mc^2=2pc => p = mc^2/2= m/2//
