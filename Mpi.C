@@ -17,10 +17,10 @@ void Mp0()
     double E_g1, E_g2;
     E_g1 = m_p0/2;
     E_g2 = E_g1;
-    cout << "P_gamma 1 = Pgamma 2 = " << p1 << " GeV/c" <<endl << "E_gamma 1 = E_gamma 2 = " << E_g1 << "GeV" << endl;
+    cout << "P_gamma 1 = Pgamma 2 = " << p1 << " GeV/c" <<endl << "E_gamma 1 = E_gamma 2 = " << E_g1 << " GeV" << endl;
 
     TCanvas *Pion = new TCanvas ("Pion","rand", 2560,1440);
-    Pion -> Divide (5,5);
+    Pion -> Divide (5,4);
     Pion -> cd(1) ;
     TRandom *rnd = new TRandom();
     TH1D *hist_phi1 = new TH1D ("phi1", "hist phi1",360,-TMath::Pi(),TMath::Pi());
@@ -45,17 +45,16 @@ void Mp0()
     TH1D *hist_pz2 = new TH1D ("pz2", "hist pz2",100,-0.08,0.08);
 
     TH1D *hist_dphi = new TH1D ("dphi", "phi1 - phi 2",360,-2.*TMath::Pi(),0);
-    TH2D *hist3d1 = new TH2D("hist2d1","px1 and py1", 100,-0.08,0.08,100,-0.08,0.08);
 
     for (int i=0;i<1000000;i++)
     {
         phi1 = rnd->Uniform(-1.*TMath::Pi(),TMath::Pi());
         cosinustheta1 = rnd->Uniform(-1.,1.);
         theta1 = acos(cosinustheta1);
-        eta1 = -TMath::Log(tan(0.5*theta1));
         px1=p1*cos(phi1)*sin(theta1);
         py1=p1*sin(phi1)*sin(theta1);
         pz1=p1*cos(theta1);
+        eta1 = -TMath::Log(tan(0.5*theta1));
 
         phi2 = phi1 - TMath::Pi();
         if (phi2<-1.*TMath::Pi())
@@ -67,10 +66,10 @@ void Mp0()
             phi2 -= 2*TMath::Pi();
         }
         theta2 = TMath::Pi() - theta1;
-        eta2 = -1.*eta1;
         px2=p2*cos(phi2)*sin(theta2);
         py2=p2*sin(phi2)*sin(theta2);
         pz2=p2*cos(theta2);
+        eta2 = -1.*eta1;
 
         dphi = phi1 - phi2;
         if (dphi<-1.*TMath::Pi())
@@ -104,21 +103,20 @@ void Mp0()
         hist_eta2->Fill(eta2);
 
         hist_dphi->Fill(dphi);
-        hist3d1->Fill(px1,py1);
     }
     hist_phi1->Draw();
-    Pion -> cd(10);
+    Pion->cd(10);
     hist_costhetha1->Draw();
-    Pion -> cd(2);
-    hist_E1-> Draw();
-    Pion -> cd(3);
-    hist_P1 -> Draw();
+    Pion->cd(2);
+    hist_E1->Draw();
+    Pion->cd(3);
+    hist_P1->Draw();
     Pion->cd(4);
-    hist_px1 ->Draw();
+    hist_px1->Draw();
     Pion->cd(5);
-    hist_py1 ->Draw();
+    hist_py1->Draw();
     Pion->cd(6);
-    hist_pz1 ->Draw();
+    hist_pz1->Draw();
     Pion->cd(7)->SetLogz();
     hist2d1->Draw("colz");
     Pion->cd(8);
@@ -127,18 +125,61 @@ void Mp0()
     hist_eta1->Draw();
     Pion->SaveAs("/media/sf_Linux-To-Windows/part 1.png");
 
-    Pion -> cd(11);
+    Pion->cd(1);
     hist_phi2->Draw();
-    Pion -> cd(12);
-    hist_E2-> Draw();
-    Pion -> cd(13);
-    hist_P2 -> Draw();
+    Pion->cd(2);
+    hist_E2->Draw();
+    Pion->cd(3);
+    hist_P2->Draw();
+    Pion->cd(4);
+    hist_px2 ->Draw();
+    Pion->cd(5);
+    hist_py2 ->Draw();
+    Pion->cd(6);
+    hist_pz2 ->Draw();
+    Pion->cd(7)->SetLogz();
+    hist2d2->Draw("colz");
+    Pion->cd(8);
+    hist_theta2->Draw();
+    Pion->cd(9);
+    hist_eta2->Draw();
+    Pion->cd(10);
+    hist_dphi->Draw();
+    Pion->SaveAs("/media/sf_Linux-To-Windows/part 2.png");
+
+    Pion->cd(1);
+    hist_phi1->Draw();
+    Pion->cd(10);
+    hist_costhetha1->Draw();
+    Pion->cd(2);
+    hist_E1->Draw();
+    Pion->cd(3);
+    hist_P1->Draw();
+    Pion->cd(4);
+    hist_px1->Draw();
+    Pion->cd(5);
+    hist_py1->Draw();
+    Pion->cd(6);
+    hist_pz1->Draw();
+    Pion->cd(7)->SetLogz();
+    hist2d1->Draw("colz");
+    Pion->cd(8);
+    hist_theta1->Draw();
+    Pion->cd(9);
+    hist_eta1->Draw();
+
+    Pion-> cd(11);
+    hist_phi2->Draw();
+    Pion->cd(12);
+    hist_E2->Draw();
+    Pion->cd(13);
+    hist_P2->Draw();
     Pion->cd(14);
     hist_px2 ->Draw();
     Pion->cd(15);
-    hist_py2 ->Draw();
+    hist_py2->Draw();
     Pion->cd(16);
-    hist_pz2 ->Draw();
+    hist_pz2->Draw();
     Pion->cd(17)->SetLogz();
     hist2d2->Draw("colz");
     Pion->cd(18);
@@ -147,8 +188,5 @@ void Mp0()
     hist_eta2->Draw();
     Pion->cd(20);
     hist_dphi->Draw();
-    Pion->cd(21);
-    gStyle->SetPalette(1);
-    hist3d1->Draw("SURF1");
     Pion->SaveAs("/media/sf_Linux-To-Windows/all.png");
 }
